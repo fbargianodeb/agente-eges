@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Agente Langflow</title>
+    <style>
+        body { font-family: sans-serif; background-color: #f4f4f9; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .container { text-align: center; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Panel de Control del Agente</h1>
+        <p>El chat aparecerá en la esquina inferior derecha.</p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/gh/debmedia/numiajb-widget@1.0.17/dist/build/static/js/bundle.min.js"></script>
+
+    <journey-builder-chat
+        window_title="Base de conocimiento - Agente Eges"
+        flow_id="0858574a-1e73-4701-a4b2-374c67d0b039"
+        host_url="https://cors-anywhere.herokuapp.com/http://TU-IP-O-DOMINIO:7860"
+        api_key="sk-dsioHDUhyMqkKtIVrPIrLHrgeYWDbdZuYAq9TKPaFmw">
+    </journey-builder-chat>
+
+</body>
+</html>
