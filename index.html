@@ -3,17 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Agente Langflow</title>
+    <title>Eges | Inteligencia Estratégica</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        body { font-family: sans-serif; background-color: #f4f4f9; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .container { text-align: center; }
+        :root {
+            --primary: #2563eb;
+            --dark: #1e293b;
+            --light: #f8fafc;
+        }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: radial-gradient(circle at top right, #e2e8f0, #f8fafc);
+            color: var(--dark);
+            display: flex; justify-content: center; align-items: center; 
+            height: 100vh; margin: 0; 
+        }
+        .card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            text-align: center;
+            max-width: 450px;
+            border: 1px solid #e2e8f0;
+        }
+        h1 { color: var(--primary); margin-bottom: 0.5rem; font-weight: 600; }
+        p { line-height: 1.6; color: #64748b; }
+        .badge {
+            background: #dbeafe;
+            color: var(--primary);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .footer { margin-top: 2rem; font-size: 0.8rem; opacity: 0.6; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>Panel de Control del Agente</h1>
-        <p>El chat aparecerá en la esquina inferior derecha.</p>
+    <div class="card">
+        <span class="badge">Activo</span>
+        <h1>BD Eges - Funcional</h1>
+        <p>Bienvenido a la versión de prueba de la base de conocimiento de <strong>Eges</strong>. Este agente ha sido orientado a clientes para responder a todas sus dudas / inquietudes </p>
+        <p>Para comenzar, haz click en el chat a la derecha </p>
+        
+        <div class="footer">Eges v1.0 - Impulsado por Journey Builder </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/gh/debmedia/numiajb-widget@1.0.17/dist/build/static/js/bundle.min.js"></script>
