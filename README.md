@@ -13,19 +13,13 @@ Interfaz web moderna para el asistente virtual de **Eges | Inteligencia Estraté
 
 El código está organizado de la siguiente manera:
 
-- `index.html`: Contiene la estructura semántica y la configuración del widget.
+- `agente-eges.html`: Contiene la estructura semántica y la configuración del widget.
 - `style.css`: Contiene todas las variables de color, tipografía y animaciones.
 
 ## 🛠️ Instalación y Uso
 
 1. Descarga ambos archivos en una misma carpeta.
 2. Abre el archivo `index.html` en tu navegador.
-3. **Importante:** Para que el chat funcione, asegúrate de reemplazar los valores `XX1`, `XX3` y `XXX4` en el archivo HTML con tus credenciales reales:
 
-```html
-<journey-builder-chat
-    window_title="Base de conocimiento - Agente Eges"
-    flow_id="TU_FLOW_ID"
-    host_url="TU_HOST_URL"
-    api_key="TU_API_KEY">
-</journey-builder-chat>
+## Versión Desplegada
+Podras acceder a la versión desplegada desde: https://agente-eges.onrender.com/ 
