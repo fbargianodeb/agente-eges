@@ -1,0 +1,114 @@
+*, *::before, *::after { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background: #09090f;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: relative;
+}
+
+.blob {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(90px);
+    pointer-events: none;
+    z-index: 0;
+}
+.blob-1 { width: 480px; height: 480px; background: #5b21b6; top: -160px; left: -160px; opacity: 0.35; }
+.blob-2 { width: 320px; height: 320px; background: #6d28d9; bottom: -80px; right: 120px; opacity: 0.2; }
+.blob-3 { width: 200px; height: 200px; background: #a3e635; bottom: -40px; right: -40px; opacity: 0.45; }
+
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.main-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+}
+
+.card {
+    width: 100%;
+    max-width: 420px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    overflow: hidden;
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    box-shadow: 0 32px 64px rgba(0, 0, 0, 0.5);
+    animation: cardIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes cardIn {
+    from { opacity: 0; transform: translateY(28px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 1.6rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.logo { display: flex; align-items: center; }
+.logo-mark { width: 32px; height: 32px; background: #7c3aed; border-radius: 50%; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.logo-img { width: 100%; height: 100%; object-fit: cover; }
+.logo-text { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 1rem; color: #e8e8f0; margin-left: 10px; }
+
+.badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 99px; background: rgba(163, 230, 53, 0.1); border: 1px solid rgba(163, 230, 53, 0.25); font-size: 0.7rem; color: #bef264; text-transform: uppercase; }
+.pulse { width: 6px; height: 6px; background: #84cc16; border-radius: 50%; animation: pulse-dot 2s infinite; }
+
+@keyframes pulse-dot { 0% { box-shadow: 0 0 0 0 rgba(132,204,22,0.7); } 70% { box-shadow: 0 0 0 6px rgba(132,204,22,0); } 100% { box-shadow: 0 0 0 0 rgba(132,204,22,0); } }
+
+.card-body { padding: 2.2rem 1.8rem 1.6rem; }
+.eyebrow { font-size: 0.72rem; color: #7c3aed; text-transform: uppercase; margin-bottom: 0.75rem; letter-spacing: 0.1em; }
+h1 { font-family: 'Poppins', sans-serif; font-size: 2.2rem; font-weight: 800; line-height: 1.1; color: #f0f0f8; margin-bottom: 1.4rem; }
+h1 em { font-style: normal; background: linear-gradient(135deg, #a78bfa, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.separator { width: 36px; height: 2px; background: linear-gradient(to right, #7c3aed, #a78bfa); margin-bottom: 1.3rem; }
+p { font-size: 0.93rem; line-height: 1.75; color: #9090b0; }
+.hint { margin-top: 1.8rem; display: flex; align-items: center; gap: 10px; font-size: 0.82rem; color: #a78bfa; }
+.hint-line { flex: 0 0 24px; height: 1px; background: #7c3aed; position: relative; }
+
+.card-footer { padding: 1rem 1.8rem; border-top: 1px solid rgba(255,255,255,0.06); display: flex; justify-content: space-between; align-items: center; }
+.footer-text { font-size: 0.7rem; color: #3f3f5a; }
+.footer-tag { font-size: 0.68rem; color: #4a4a6a; background: rgba(255,255,255,0.04); padding: 2px 7px; border-radius: 4px; }
+
+journey-builder-chat {
+    position: relative !important;
+    bottom: auto !important;
+    right: auto !important;
+    margin: 0 !important;
+}
+
+@media (max-width: 768px) {
+    .main-container {
+        flex-direction: column;
+        gap: 30px;
+    }
+}
