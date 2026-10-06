@@ -1,58 +1,387 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eges | Asistente Inteligente</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Poppins:wght@300;400;600&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Numia Insights</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: sidebar de 4 vistas (Fuentes, Informe, Acciones, Agentes) + área de trabajo. Marca Numia: Almost Black, Cold Purple, Neon. */
+:root{
+  --bg:#F5F5FB; --surface:#FFFFFF; --surface2:#EEEEF8; --ink:#060A27; --muted:#6B6980; --line:#DCDCEA;
+  --brand:#863DFF; --brand-ink:#FFFFFF; --brand-soft:#E9DEFF; --neon:#CBFF2E; --neon-ink:#060A27;
+  --good:#0E8F73; --warn:#B26A00; --bad:#C62F4B; --side:#060A27; --side-ink:#DDE0FF;
+  --font:'Hanken Grotesk',Arial,sans-serif; --mono:'JetBrains Mono',ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#060A27; --surface:#0E1336; --surface2:#161C47; --ink:#EEF0FF; --muted:#9593A1; --line:#232A5C;
+  --brand:#A474FF; --brand-ink:#060A27; --brand-soft:#2A1F5E; --good:#7BE1C9; --warn:#F2B84B; --bad:#FF7A93; --side:#04061A; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#060A27; --surface:#0E1336; --surface2:#161C47; --ink:#EEF0FF; --muted:#9593A1; --line:#232A5C;
+  --brand:#A474FF; --brand-ink:#060A27; --brand-soft:#2A1F5E; --good:#7BE1C9; --warn:#F2B84B; --bad:#FF7A93; --side:#04061A; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.5;margin:0}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+.app{display:grid;grid-template-columns:240px minmax(0,1fr);min-height:100vh}
+.side{background:var(--side);color:var(--side-ink);padding:20px 14px;display:flex;flex-direction:column;gap:6px;position:sticky;top:0;height:100vh;align-self:start}
+.logo{font-weight:800;font-size:22px;letter-spacing:-.02em;color:#fff;padding:0 10px 4px}
+.logo span{color:var(--neon)}
+.sub{font-size:12px;color:#9593A1;padding:0 10px 18px}
+.nav{display:flex;align-items:center;gap:10px;background:none;border:0;color:var(--side-ink);padding:10px;border-radius:8px;text-align:left;width:100%}
+.nav:hover{background:rgba(255,255,255,.06)}
+.nav[aria-current="page"]{background:#863DFF;color:#fff;font-weight:600}
+.nav .n{margin-left:auto;font-size:12px;background:var(--neon);color:#060A27;border-radius:99px;padding:0 8px;font-weight:700}
+.side .foot{margin-top:auto;font-size:12px;color:#9593A1;padding:10px}
+.main{padding:28px clamp(16px,4vw,44px) 60px;min-width:0;max-width:1180px}
+h1{font-size:28px;letter-spacing:-.02em;margin:0 0 4px;line-height:1.15;text-wrap:balance}
+h2{font-size:18px;margin:0 0 10px;letter-spacing:-.01em}
+h3{font-size:15px;margin:0}
+.lead{color:var(--muted);margin:0 0 22px;max-width:70ch}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr))}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;min-width:0}
+.btn{background:var(--brand);color:var(--brand-ink);border:0;border-radius:8px;padding:9px 16px;font-weight:600}
+.btn:hover{filter:brightness(1.08)}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn.neon{background:var(--neon);color:var(--neon-ink)}
+.btn:disabled{opacity:.5;cursor:default}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:2px 10px;border-radius:99px;background:var(--surface2);color:var(--muted);white-space:nowrap}
+.chip.on{background:var(--brand-soft);color:var(--brand)}
+.chip.good{color:var(--good)} .chip.warn{color:var(--warn)} .chip.bad{color:var(--bad)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--muted)}
+.dot.on{background:var(--good)}
+.mono{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.muted{color:var(--muted)}
+/* toggle */
+.sw{position:relative;width:40px;height:22px;border-radius:99px;background:var(--line);border:0;flex:none;padding:0}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:transform .15s}
+.sw[aria-checked="true"]{background:var(--brand)}
+.sw[aria-checked="true"]::after{transform:translateX(18px)}
+/* sources */
+.src{display:flex;flex-direction:column;gap:12px}
+.src header{display:flex;gap:12px;align-items:flex-start}
+.ico{width:38px;height:38px;border-radius:10px;background:var(--side);color:var(--neon);display:grid;place-items:center;font-weight:800;flex:none}
+.src .meta{display:flex;flex-wrap:wrap;gap:6px}
+.src dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:13px}
+.src dt{color:var(--muted)} .src dd{margin:0;font-family:var(--mono);font-size:12px;word-break:break-word}
+.keybox{margin-top:18px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.join{font-family:var(--mono);font-size:12px;background:var(--surface2);padding:3px 8px;border-radius:6px}
+/* report */
+.gen{display:flex;gap:10px;flex-wrap:wrap;align-items:end;margin-bottom:18px}
+.gen label{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--muted);font-weight:600}
+select{font:inherit;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.steps li{display:flex;gap:10px;align-items:center;color:var(--muted)}
+.steps li.done{color:var(--ink)} .steps li.done::before{content:"✓";color:var(--good);font-weight:700}
+.steps li.run::before{content:"";width:12px;height:12px;border:2px solid var(--brand);border-top-color:transparent;border-radius:50%;animation:sp .7s linear infinite}
+.steps li:not(.done):not(.run)::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--line);margin:0 1px}
+@keyframes sp{to{transform:rotate(360deg)}}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:18px}
+.kpi{background:#060A27;color:#fff;border-radius:12px;padding:14px 16px}
+.kpi b{display:block;font-size:30px;color:var(--neon);letter-spacing:-.02em;line-height:1.1;font-variant-numeric:tabular-nums}
+.kpi span{font-size:12px;color:#B5B3C2}
+.finding{display:grid;gap:10px}
+.finding .top{display:flex;gap:10px;justify-content:space-between;align-items:flex-start;flex-wrap:wrap}
+.finding p{margin:0;max-width:75ch}
+.cross{display:flex;gap:6px;flex-wrap:wrap}
+.cross .chip::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--brand)}
+.finding .acts{display:flex;gap:8px;flex-wrap:wrap;align-items:center;border-top:1px solid var(--line);padding-top:10px;font-size:13px}
+.sev{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.sev.high{color:var(--bad)} .sev.med{color:var(--warn)} .sev.low{color:var(--good)}
+table{border-collapse:collapse;width:100%;font-size:13px;font-variant-numeric:tabular-nums}
+th{background:#060A27;color:#fff;text-align:left;padding:8px 12px;font-weight:600}
+td{padding:8px 12px;border-bottom:1px solid var(--line)}
+.scroll{overflow-x:auto}
+.empty{text-align:center;padding:48px 16px;color:var(--muted)}
+/* actions */
+.act{display:grid;gap:10px}
+.act .hd{display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap;align-items:flex-start}
+.bar{height:6px;border-radius:99px;background:var(--surface2);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--brand);width:0;transition:width .3s}
+.out{background:var(--surface2);border-radius:8px;padding:12px 14px;font-size:13px;white-space:pre-wrap}
+.status-sug{color:var(--muted)} .status-run{color:var(--brand)} .status-rev{color:var(--warn)} .status-ok{color:var(--good)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{background:none;border:0;padding:5px 10px;font-size:12px;font-weight:600;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--brand);color:var(--brand-ink)}
+.note{font-size:12px;color:var(--muted);margin-top:18px}
+.top-r{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}
+.theme{background:none;border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-size:12px;color:var(--muted)}
+.main.wide{max-width:1500px}
+.split{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:22px;align-items:start}
+.chat{position:sticky;top:16px;height:calc(100vh - 32px);display:flex;flex-direction:column;padding:0;overflow:hidden}
+.chat .hd{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;gap:10px;align-items:center}
+.chat .hd .ico{width:32px;height:32px;font-size:14px}
+.chat .log{flex:1;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:12px}
+.msg{max-width:92%;padding:10px 12px;border-radius:12px;font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere}
+.msg.u{align-self:flex-end;background:var(--brand);color:var(--brand-ink);border-bottom-right-radius:4px}
+.msg.a{align-self:flex-start;background:var(--surface2);border-bottom-left-radius:4px}
+.msg .cross{margin-top:8px}
+.sugs{display:flex;flex-wrap:wrap;gap:6px;padding:0 16px 10px}
+.sugs button{background:var(--surface);border:1px solid var(--line);border-radius:99px;padding:4px 10px;font-size:12px;color:var(--ink)}
+.sugs button:hover{border-color:var(--brand);color:var(--brand)}
+.chat form{display:flex;gap:8px;padding:12px 16px;border-top:1px solid var(--line)}
+.chat input{flex:1;min-width:0;font:inherit;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:9px 12px}
+.typing{display:inline-flex;gap:4px}.typing i{width:6px;height:6px;border-radius:50%;background:var(--muted);animation:bl 1s infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes bl{50%{opacity:.25}}
+@media (max-width:1100px){.split{grid-template-columns:1fr}.chat{position:static;height:560px}}
+@media (max-width:820px){
+  .app{grid-template-columns:1fr}
+  .side{position:static;height:auto;flex-direction:row;flex-wrap:wrap;padding:12px;align-items:center}
+  .sub,.side .foot{display:none}
+  .logo{padding:0 10px 0 4px}
+  .nav{width:auto;padding:7px 10px;font-size:13px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
 
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
-    <div class="blob blob-3"></div>
+<div class="app">
+  <nav class="side" aria-label="Secciones">
+    <div class="logo">numia<span>.</span>insights</div>
+    <div class="sub">Prototipo · datos de ejemplo</div>
+    <button class="nav" data-v="informe">▤ Informe</button>
+    <button class="nav" data-v="acciones">⚡ Acciones <span class="n" id="nAcc">0</span></button>
+    <button class="nav" data-v="agentes">◎ Agentes</button>
+    <button class="nav" data-v="fuentes">⚙ Fuentes</button>
+    <div class="foot">Sucursal Máximo Gómez · Promerica</div>
+  </nav>
+  <main class="main" id="main"></main>
+</div>
 
-    <main class="main-container">
-        <div class="card">
-            <div class="card-header">
-                <div class="logo">
-                    <div class="logo-mark">
-                        <img src="numia_logo.jpg" alt="Logo" class="logo-img">
-                    </div>
-                    <span class="logo-text">Numia</span>
-                </div>
-                <div class="badge">
-                    <span class="pulse"></span> Disponible
-                </div>
-            </div>
+<script>
+/* ---------- Datos ---------- */
+const PRODUCTS=[
+ {id:'manager',name:'Numia Manager',ic:'M',desc:'Turnos, esperas, derivaciones, abandonos.',conn:true,endpoint:'api.numia.app/manager/v1',last:'hace 12 min',recs:'3.889 turnos',fields:['Id de Turno','Trámite','Tiempo de espera','Atención total','Derivaciones','Abandono']},
+ {id:'speech',name:'Speech Analytics',ic:'S',desc:'Sentimiento, resolución, fricciones por llamada.',conn:true,endpoint:'api.numia.app/speech/v1',last:'hace 1 h',recs:'1.517 llamadas',fields:['recording_id','sentimiento','score_ejecutivo','resolucion_1er_contacto','queja','tipificacion']},
+ {id:'copilot',name:'Copiloto (Journey Builder)',ic:'C',desc:'Sesiones y sugerencias de venta en Negocio.',conn:true,endpoint:'api.numia.app/journeys/v1',last:'hace 3 h',recs:'1.499 sesiones',fields:['Id de turno','DNI cliente','sugerencia','mensajes_ejecutivo','campaña_activa']},
+ {id:'agents',name:'Agentes de AI',ic:'A',desc:'Conversaciones de voz y chat con clientes.',conn:false,endpoint:'api.numia.app/agents/v1',last:'—',recs:'—',fields:['conversation_id','canal','intención','resuelto_sin_humano']},
+ {id:'vision',name:'Numia Vision',ic:'V',desc:'Afluencia, permanencia y conteo en sucursal.',conn:false,endpoint:'api.numia.app/vision/v1',last:'—',recs:'—',fields:['camera_id','zona','conteo','permanencia_seg']}
+];
+const state={chat:[],busy:false,view:'informe',on:{manager:true,speech:true,copilot:true,agents:false,vision:false},generated:false,gen:null,
+  actions:{},autonomy:{}};
 
-            <div class="card-body">
-                <p class="eyebrow">Base de conocimiento</p>
-                <h1>Asistente <em>Eges</em></h1>
-                <div class="separator"></div>
-                <p>Bienvenido a la versión de prueba de la base de conocimiento de <strong>Eges</strong>. Este agente fue orientado a clientes para responder todas sus dudas e inquietudes.</p>
-                <div class="hint">
-                    <span class="hint-line"></span>
-                    Abrí el chat a la derecha para comenzar
-                </div>
-            </div>
+const AGENTS=[
+ {id:'reclas',name:'Reclasificador de trámites',acts:'manager',desc:'Propone nuevos trámites y reglas de ingreso en Numia Manager, separando lo que no necesita ejecutivo.',tools:['Numia Manager (config)','Speech Analytics']},
+ {id:'ruteo',name:'Optimizador de derivaciones',acts:'manager',desc:'Detecta ciclos de derivación entre colas y propone reglas de ruteo para cortarlos.',tools:['Numia Manager (config)']},
+ {id:'selfserv',name:'Agente de soporte digital',acts:'agents',desc:'Atiende por chat o voz las consultas de banca digital (acceso, contraseñas, estados de cuenta) antes de que lleguen a un puesto.',tools:['Agentes de AI','Journey Builder']},
+ {id:'dotacion',name:'Planificador de dotación',acts:'manager',desc:'Cruza turnos, esperas y afluencia para recomendar puestos por franja horaria y día.',tools:['Numia Manager','Numia Vision']},
+ {id:'coach',name:'Coach de ejecutivos',acts:'speech',desc:'Selecciona llamadas modelo y problemáticas, y arma un plan de coacheo por ejecutivo.',tools:['Speech Analytics']},
+ {id:'survey',name:'Agente de encuestas',acts:'journey',desc:'Agrega la encuesta como paso fijo del flujo y la dispara al cierre de cada atención.',tools:['Journey Builder','Numia Manager']},
+ {id:'copi',name:'Optimizador de Copiloto',acts:'copilot',desc:'Rediseña cuándo y cómo aparece la sugerencia para que entre al flujo de la conversación.',tools:['Copiloto (Journey Builder)','Speech Analytics']},
+ {id:'audit',name:'Auditor de cierres',acts:'speech',desc:'Escucha una muestra de atenciones sin operación confirmada y clasifica la causa.',tools:['Speech Analytics','Numia Manager']}
+];
+const AG=Object.fromEntries(AGENTS.map(a=>[a.id,a]));
+AGENTS.forEach(a=>state.autonomy[a.id]='approve');
 
-            <div class="card-footer">
-                <span class="footer-text">Eges · v1.1</span>
-                <span class="footer-tag">Journey Builder</span>
-            </div>
-        </div>
+const FINDINGS=[
+ {id:'f1',sev:'high',title:'Otros Servicios N concentra el 48% de los abandonos con el 15% del volumen',
+  body:'Hay un ida y vuelta entre Pagos y Otros Servicios N (271 turnos de ida, 221 de vuelta). Además, casi el 47% de lo que entra son consultas que un canal digital resolvería: Acceso Promerica Online (27,5%), Balance y Estados de Cuenta (11,1%) e Información de Productos (8,1%).',
+  src:['manager','speech'],acts:[{id:'a1',ag:'reclas',t:'Reclasificar Otros Servicios N',imp:'Hasta 47% menos ingresos al trámite'},{id:'a2',ag:'ruteo',t:'Cortar el ciclo Pagos ↔ Otros Servicios N',imp:'~220 derivaciones de vuelta/mes'},{id:'a3',ag:'selfserv',t:'Resolver "Acceso Promerica Online" con un agente digital',imp:'198 atenciones/mes fuera de puestos'}]},
+ {id:'f2',sev:'high',title:'Negocio resuelve en el primer contacto solo el 47,7% y genera 7 veces más sentimiento negativo que Caja',
+  body:'Charimel Estevez queda por debajo del equipo en ambas métricas (9,5% negativo, 39,4% de resolución). El tiempo de espera casi no se relaciona con el sentimiento (correlación -0,01): el problema ocurre durante la conversación.',
+  src:['speech','manager'],acts:[{id:'a4',ag:'coach',t:'Plan de coacheo para Negocio, empezando por Charimel Estevez',imp:'Cierra la brecha de 39% a ~50% de resolución'}]},
+ {id:'f3',sev:'med',title:'Martes y viernes son críticos por motivos distintos',
+  body:'Martes: mayor volumen y peor sentimiento (6,6%). Viernes: mayor espera (1,67 min) y mayor abandono (10,8%). La franja de 12 a 13 h acumula el 20% de los abandonos del mes.',
+  src:['manager','speech'],acts:[{id:'a5',ag:'dotacion',t:'Reforzar Negocio martes y viernes, y la franja 12-13 h',imp:'Ataca 66 abandonos/mes en una sola franja'}]},
+ {id:'f4',sev:'med',title:'El copiloto casi no se usa: 7 de 1.499 sesiones tienen un mensaje del ejecutivo',
+  body:'En el 85% de las sesiones el copiloto avisa que no hay campaña activa. Las dos únicas consultas en texto libre llegaron cuando el cliente ya había rechazado la oferta.',
+  src:['copilot','speech'],acts:[{id:'a6',ag:'copi',t:'Mover la sugerencia al inicio de la atención y activar campañas',imp:'De 0,5% a uso medible'}]},
+ {id:'f5',sev:'low',title:'La encuesta se ofrece en 1 de cada 20 atenciones y 1 de cada 5 queda sin operación confirmada',
+  body:'Son las dos fuentes de verdad más baratas para medir satisfacción y cierre, y hoy están casi vacías.',
+  src:['speech','manager'],acts:[{id:'a7',ag:'survey',t:'Encuesta como paso fijo del flujo',imp:'De 5,3% a >60% de cobertura'},{id:'a8',ag:'audit',t:'Auditar muestra de atenciones sin operación confirmada',imp:'Distingue problema de cierre vs. de registro'}]}
+];
+const VISION_FINDING={id:'f6',sev:'med',example:true,title:'Hay clientes que ven la fila y se van sin sacar turno',
+  body:'Con Numia Vision conectado se compara la afluencia real en puerta contra los turnos emitidos. En esta simulación, entre 12 y 13 h entra un 14% más de gente que turnos emitidos, que no aparece en ningún abandono registrado.',
+  src:['vision','manager'],acts:[{id:'a9',ag:'dotacion',t:'Ajustar dotación usando afluencia real y no solo turnos',imp:'Abandono invisible: ~14% en la franja'}]};
+const AGENTS_FINDING={id:'f7',sev:'low',example:true,title:'El agente de AI podría absorber las consultas de banca digital',
+  body:'Con Agentes de AI conectado se mide cuántas de esas consultas ya se resuelven sin humano. En esta simulación, el 38% de las consultas de acceso se resuelve solo, y el resto escala a Otros Servicios N.',
+  src:['agents','manager'],acts:[]};
 
-        <journey-builder-chat
-            window_title="Base de conocimiento - Agente Eges"
-            flow_id="99488214-a87f-4036-b8f7-7bec5c4f9761"
-            host_url="https://api.journeybuilder.desa.numia.co"
-            api_key="sk-7hCM6zEH_9vKs4kQPkCYCFFaVdRViiR6rZi9njhkrok"
-            allow_to_send_imgs="true">
-        </journey-builder-chat>
-    </main>
+const OUT={
+ a1:'Propuesta de reclasificación (borrador)\n• Nuevo trámite "Banca digital y accesos": Acceso Promerica Online, Balance y Estados de Cuenta, Información de Productos.\n• Otros Servicios N queda solo con: Cancelación TC, Reclamaciones y resto de gestiones.\n• Regla de ingreso: el kiosco ofrece el trámite digital antes de emitir turno.',
+ a2:'Regla de ruteo (borrador)\n• Si un turno viene de Pagos hacia Otros Servicios N y la tipificación es "Acceso" o "Balance", resolver en Pagos.\n• Si vuelve a Pagos, no permitir una segunda derivación al mismo trámite.\n• Alerta al supervisor al 2.º ciclo.',
+ a3:'Flujo para agente digital (borrador)\n• Canal: WhatsApp + QR en kiosco.\n• Cubre: blanqueo de clave, desbloqueo y descarga de estados de cuenta.\n• Escala a un ejecutivo con el contexto ya cargado si no puede resolver en 3 intercambios.',
+ a4:'Plan de coacheo (borrador)\n• 6 llamadas de Charimel con sentimiento negativo y 4 llamadas modelo de Judith Guillen.\n• 3 sesiones de 30 min en 3 semanas, foco en cierre de la conversación y manejo de objeciones.\n• Medir: resolución en primer contacto semanal.',
+ a5:'Plan de dotación (borrador)\n• Martes: +1 puesto de Negocio de 10 a 14 h (desde Caja).\n• Viernes: +1 flotante de 11 a 15 h.\n• Todos los días 12-13 h: no programar descansos en Negocio.',
+ a6:'Rediseño de la sugerencia (borrador)\n• Mostrar la sugerencia al abrir el turno, con el producto y el argumento en una línea.\n• Si no hay campaña activa, no mostrar el aviso.\n• Registrar si el ejecutivo la abrió, para medir adopción real.',
+ a7:'Cambio en el flujo (borrador)\n• Paso final fijo: "¿Nos ayudás con 1 pregunta?" en pantalla o QR.\n• Meta de cobertura: 60% en 30 días.\n• Reporte semanal por ejecutivo.',
+ a8:'Muestra de auditoría (borrador)\n• 40 llamadas sin operación confirmada, estratificadas por canal y ejecutivo.\n• Cada una se clasifica: cierre incompleto, registro faltante o consulta sin operación.\n• Entrega: tabla con causa y 5 ejemplos escuchables.',
+ a9:'Plan de dotación con afluencia (borrador)\n• Usar el conteo de Vision en la franja 12-13 h como entrada de la proyección.\n• Alerta en vivo cuando la fila supera el umbral.'
+};
 
-    <script src="https://cdn.jsdelivr.net/gh/debmedia/numiajb-widget@1.0.17/dist/build/static/js/bundle.min.js"></script>
-</body>
-</html>
+/* ---------- Helpers ---------- */
+const $=s=>document.querySelector(s);
+const pName=id=>PRODUCTS.find(p=>p.id===id).name.replace(/ \(.*\)/,'');
+const esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+function findings(){
+  const f=[...FINDINGS];
+  if(state.on.vision)f.push(VISION_FINDING);
+  if(state.on.agents)f.push(AGENTS_FINDING);
+  return f;
+}
+function allActs(){return findings().flatMap(f=>f.acts.map(a=>({...a,finding:f})))}
+function st(id){return state.actions[id]||{s:'sug',p:0}}
+function sources(){return PRODUCTS.filter(p=>state.on[p.id])}
+
+/* ---------- Vistas ---------- */
+function vFuentes(){
+  const n=sources().length;
+  return `<div class="top-r"><div><h1>Fuentes</h1>
+  <p class="lead">Conectá los productos de Numia que querés cruzar. El análisis solo usa los que estén activos y busca patrones que ningún producto muestra por separado.</p></div>
+  <button class="theme" id="themeBtn">Cambiar tema</button></div>
+  <div class="grid g2">${PRODUCTS.map(p=>`
+   <section class="card src">
+    <header><div class="ico">${p.ic}</div><div style="flex:1;min-width:0"><h3>${p.name}</h3><div class="muted" style="font-size:13px">${p.desc}</div></div>
+     <button class="sw" role="switch" aria-checked="${state.on[p.id]}" aria-label="Usar ${p.name} en el análisis" data-sw="${p.id}"></button></header>
+    <div class="meta"><span class="chip"><i class="dot ${p.conn||state.on[p.id]?'on':''}"></i>${p.conn||state.on[p.id]?'Conectado':'Sin conectar'}</span>
+     ${state.on[p.id]?`<span class="chip on">En el análisis</span>`:`<span class="chip">Fuera del análisis</span>`}</div>
+    <dl><dt>Endpoint</dt><dd>${p.endpoint}</dd><dt>Registros</dt><dd>${state.on[p.id]&&!p.conn?'ejemplo (demo)':p.recs}</dd><dt>Última sync</dt><dd>${state.on[p.id]&&!p.conn?'ahora':p.last}</dd>
+     <dt>Campos</dt><dd>${p.fields.join(' · ')}</dd></dl>
+   </section>`).join('')}</div>
+  <section class="card keybox"><div style="flex:1;min-width:240px"><h3>Cómo se cruzan</h3>
+   <p class="muted" style="margin:4px 0 0;font-size:13px">Identificador común por registro. En esta sucursal coincide en el 100% de los casos entre Manager y Speech.</p></div>
+   <span class="join">Manager.Id de Turno</span><span>=</span><span class="join">Speech.recording_id (prefijo)</span>
+   <span class="join">Copiloto.Id de turno | DNI</span></section>
+  <p class="note">${n} de 5 fuentes activas. Al activar Numia Vision o Agentes de AI aparecen hallazgos nuevos en el informe (datos simulados en este prototipo).</p>`;
+}
+
+function vInforme(){
+  const gen=`<div class="gen">
+   <label>Sucursal<select id="selSuc"><option>Máximo Gómez · Promerica</option><option>Casa Matriz · Promerica</option></select></label>
+   <label>Período<select id="selPer"><option>Septiembre 2026</option><option>Agosto 2026</option></select></label>
+   <button class="btn" id="genBtn">${state.generated?'Regenerar informe':'Generar informe'}</button>
+   <span class="muted" style="font-size:13px">Cruza ${sources().map(p=>pName(p.id)).join(', ')}</span></div>`;
+  if(state.gen){
+    const S=['Leyendo '+sources().map(p=>pName(p.id)).join(', '),'Cruzando registros por identificador','Detectando patrones y anomalías','Proponiendo acciones y asignando agentes','Redactando el informe'];
+    return `<h1>Informe</h1><p class="lead">Generando el informe de la sucursal.</p>${gen}
+    <div class="card"><ul class="steps">${S.map((t,i)=>`<li class="${i<state.gen.i?'done':i===state.gen.i?'run':''}">${t}</li>`).join('')}</ul></div>`;
+  }
+  if(!state.generated)return `<h1>Informe</h1><p class="lead">Elegí sucursal y período. El informe lo escribe un modelo de AI sobre el cruce de tus fuentes.</p>${gen}
+   <div class="card empty"><b>Todavía no hay un informe.</b><br>Generá el primero para ver hallazgos y acciones sugeridas.</div>`;
+  const F=findings(),A=allActs();
+  const body=`<h1>Informe de sucursal · Máximo Gómez</h1><p class="lead">Septiembre 2026 · generado ${new Date().toLocaleDateString('es-AR')} · ${sources().length} fuentes cruzadas</p>${gen}
+  <div class="kpis"><div class="kpi"><b>3.889</b><span>turnos atendidos</span></div><div class="kpi"><b>8,4%</b><span>abandono</span></div><div class="kpi"><b>47,7%</b><span>resolución 1er contacto en Negocio</span></div><div class="kpi"><b>${F.length}</b><span>hallazgos · ${A.length} acciones</span></div></div>
+  <div class="card" style="margin-bottom:14px"><h2>Resumen</h2><p style="margin:0;max-width:75ch">La sucursal resuelve bien lo transaccional: Caja cierra el 93,7% en el primer contacto. La fricción está en Negocio y en Otros Servicios N, donde un ida y vuelta con Pagos y consultas de banca digital ocupan puestos que podrían atender gestiones comerciales.</p></div>
+  <h2>Hallazgos</h2><div class="grid">${F.map(f=>`
+   <article class="card finding"><div class="top"><h3 style="max-width:62ch">${esc(f.title)}</h3><span class="sev ${f.sev}">${{high:'Alta',med:'Media',low:'Baja'}[f.sev]} prioridad</span></div>
+    <p>${esc(f.body)}</p>
+    <div class="cross"><span class="muted" style="font-size:12px">Fuentes cruzadas:</span>${f.src.map(s=>`<span class="chip">${pName(s)}</span>`).join('')}${f.example?'<span class="chip warn">Dato de ejemplo</span>':''}</div>
+    ${f.acts.length?`<div class="acts"><b>Acciones:</b>${f.acts.map(a=>`<span class="chip on">${AG[a.ag].name}</span>`).join('')}<button class="btn ghost" data-go="acciones" style="margin-left:auto;padding:5px 12px">Ver acciones</button></div>`:''}
+   </article>`).join('')}</div>
+  <h2 style="margin-top:22px">Desempeño por ejecutivo</h2>
+  <div class="card scroll" style="padding:0"><table><thead><tr><th>Ejecutivo</th><th>Canal</th><th>Llamadas</th><th>Sent. negativo</th><th>Resolución 1er contacto</th></tr></thead><tbody>
+   ${[['Aurys Palen','Caja',258,'1,2%','94,6%'],['Joslaidy De La Cruz','Caja',208,'0,5%','92,3%'],['Heidy Gomez','Caja',243,'1,2%','94,2%'],['Negocio Flotante','Negocio',321,'6,9%','51,7%'],['Judith Guillen','Negocio',251,'6,0%','50,6%'],['Charimel Estevez','Negocio',231,'9,5%','39,4%']].map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+  return `<div class="split"><div style="min-width:0">${body}</div>${chatHtml()}</div>`;
+}
+
+const STL={sug:['Sugerida','status-sug'],run:['El agente está trabajando','status-run'],rev:['Lista para tu revisión','status-rev'],ok:['Aprobada y aplicada','status-ok']};
+function vAcciones(){
+  if(!state.generated)return `<h1>Acciones</h1><p class="lead">Las acciones salen del informe. Cada una la ejecuta un agente específico.</p><div class="card empty">Generá un informe primero.</div>`;
+  const A=allActs();
+  return `<h1>Acciones</h1><p class="lead">Cada acción tiene un agente asignado. El agente prepara el cambio y vos lo aprobás antes de que se aplique.</p>
+  <div class="grid">${A.map(a=>{const s=st(a.id),ag=AG[a.ag],L=STL[s.s];return `
+   <article class="card act"><div class="hd"><div style="min-width:0"><h3>${esc(a.t)}</h3>
+    <div class="muted" style="font-size:13px">Impacto esperado: ${esc(a.imp)}</div></div><span class="chip ${L[1].replace('status-','')==='ok'?'good':''} ${L[1]}">${L[0]}</span></div>
+    <div class="cross"><span class="chip on">${ag.name}</span><span class="chip">actúa sobre ${pName(ag.acts==='journey'?'copilot':ag.acts)}</span><span class="chip">de: ${esc(a.finding.title.slice(0,40))}…</span></div>
+    ${s.s==='run'?`<div class="bar"><i style="width:${s.p}%"></i></div>`:''}
+    ${s.s==='rev'||s.s==='ok'?`<div class="out">${esc(OUT[a.id])}</div>`:''}
+    <div class="row">${s.s==='sug'?`<button class="btn" data-run="${a.id}">Preparar con el agente</button>`:''}
+     ${s.s==='rev'?`<button class="btn neon" data-ok="${a.id}">Aprobar y aplicar</button><button class="btn ghost" data-redo="${a.id}">Descartar</button>`:''}</div>
+   </article>`}).join('')}</div>`;
+}
+
+function vAgentes(){
+  const AL={suggest:'Solo sugerir',approve:'Pedir aprobación',auto:'Automático'};
+  return `<h1>Agentes</h1><p class="lead">Cada agente tiene una tarea acotada y un producto sobre el que puede actuar. Definí cuánta autonomía tiene.</p>
+  <div class="grid g2">${AGENTS.map(a=>{const used=allActs().filter(x=>x.ag===a.id).length,tgt=a.acts==='journey'?'copilot':a.acts,missing=!state.on[tgt];return `
+   <section class="card" style="display:grid;gap:10px"><div class="row" style="justify-content:space-between;align-items:flex-start"><h3>${a.name}</h3><span class="chip ${used?'on':''}">${used?used+' acción'+(used>1?'es':''):'Sin tareas'}</span></div>
+    <p class="muted" style="margin:0;font-size:14px">${a.desc}</p>
+    <div class="cross">${a.tools.map(t=>`<span class="chip">${t}</span>`).join('')}</div>
+    ${missing?`<div class="chip warn" style="white-space:normal">Necesita ${pName(tgt)} conectado</div>`:''}
+    <div class="seg" role="group" aria-label="Autonomía de ${a.name}">${Object.entries(AL).map(([k,v])=>`<button aria-pressed="${state.autonomy[a.id]===k}" data-au="${a.id}:${k}">${v}</button>`).join('')}</div>
+   </section>`}).join('')}</div>`;
+}
+
+/* ---------- Chat con el agente de informes (respuestas simuladas) ---------- */
+const SUGS=['¿Por qué Otros Servicios N tiene tanto abandono?','¿Qué pasa con Charimel Estevez?','¿Qué pasa los martes y viernes?','¿Se usa el copiloto?','¿Qué acciones me recomiendas primero?'];
+const norm=t=>t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+const KB=[
+ [/vision|afluencia|camara|puerta/,()=>state.on.vision?['Con Numia Vision conectado, entre 12 y 13 h entra un 14% más de gente que turnos emitidos (dato de ejemplo). Ese 14% no aparece en ningún abandono registrado.',['vision','manager']]:['Numia Vision no está conectado. Con su conteo de afluencia podría medir cuánta gente se va sin sacar turno, algo que hoy no se ve. Activalo en Fuentes y regenerá el informe.',['vision']]],
+ [/autoservicio|digital|chatbot/,()=>['Las consultas de banca digital (Acceso Promerica Online 27,5%, Balance y Estados de Cuenta 11,1%, Información de Productos 8,1%) suman casi el 47% de Otros Servicios N. El Agente de soporte digital las atendería antes de que lleguen a un puesto.',['manager','speech']]],
+ [/otros servicios|abandon/,()=>['Otros Servicios N es el 15% del volumen y concentra el 48% de los abandonos. Tiene la mayor espera, el mayor tiempo de atención y el sentimiento negativo más alto (8,0%, casi el doble del segundo).\n\nHay dos causas: un ida y vuelta con Pagos (271 turnos de ida, 221 de vuelta) y un 47% de consultas que no necesitan ejecutivo. El abandono total del mes fue 8,4% (327 turnos).',['manager','speech']]],
+ [/derivaci|pagos|circulo|ida y vuelta/,()=>['271 turnos pasaron de Pagos a Otros Servicios N y 221 volvieron. El 16,4% de los turnos tuvo al menos una derivación. Un turno derivado resuelve en primer contacto el 62,2% de las veces, contra 74,3% sin derivación.',['manager','speech']]],
+ [/charimel|estevez/,()=>['Charimel Estevez (Negocio, 231 llamadas): 9,5% de sentimiento negativo y 39,4% de resolución en primer contacto. El resto de Negocio está en 6-7% y 50-52%. Es además la única que le escribió al copiloto en texto libre (2 veces, ambas con el cliente ya habiendo rechazado la oferta).',['speech','copilot']]],
+ [/ejecutiv|equipo|desempeno|judith|flotante|aurys|heidy|joslaidy/,()=>['Los tres de Caja están parejos: 0,5-1,2% de sentimiento negativo y 92-95% de resolución. En Negocio: Negocio Flotante 6,9% / 51,7%, Judith Guillen 6,0% / 50,6% y Charimel Estevez 9,5% / 39,4%.',['speech']]],
+ [/martes|viernes|dia|semana/,()=>['Martes: mayor volumen y peor sentimiento (6,6% negativo). Viernes: mayor espera (1,67 min) y mayor abandono (10,8%). Son problemas distintos: el martes falta capacidad de atención, el viernes capacidad de absorber fila.',['manager','speech']]],
+ [/12|franja|hora|pico/,()=>['La franja de 12 a 13 h tiene la espera más alta del día (1,86 min) y concentra 66 de los 327 abandonos del mes (20%).',['manager']]],
+ [/copiloto|sugerencia|crediplus|journey/,()=>['Hubo 1.499 sesiones del copiloto en Negocio. Solo 7 (0,5%) tienen un mensaje del ejecutivo, y 5 de esos 7 son un número tipeado en el menú de atajos. En el 85% de las sesiones el copiloto avisa que no hay campaña activa.',['copilot','speech']]],
+ [/encuesta|satisfaccion|csat/,()=>['La encuesta se ofreció en el 5,3% de las atenciones (1 de cada 20). Es la fuente de satisfacción más barata y casi no se usa.',['speech']]],
+ [/confirmada|operacion|cierre/,()=>['El 22% de las atenciones (1 de cada 5) queda sin operación confirmada. En Caja se confirma el 92,1% y en Negocio el 65,5%. Falta saber si es un problema de cierre de la conversación o de registro.',['speech']]],
+ [/sentimiento|queja|reclamo/,()=>['47,3% de las atenciones terminan con sentimiento positivo, 48,1% neutro y 4,5% negativo. Caja tiene 1,1% negativo y Negocio 7,2%. Hubo 139 quejas explícitas (9,2% de las llamadas) y 129 de ellas (93%) son de PROCESOS.',['speech']]],
+ [/espera|tiempo/,()=>['Espera promedio: 1,4 min. Atención promedio: 6,6 min. La espera casi no se relaciona con el sentimiento final (correlación -0,01): lo que pesa es la conversación, no cuánto esperó el cliente.',['manager','speech']]],
+ [/caja/,()=>['Caja cierra el 93,7% de sus atenciones en el primer contacto, con 1,1% de sentimiento negativo y 92,1% de operaciones confirmadas.',['speech']]],
+ [/negocio/,()=>['Negocio tiene 7,2% de sentimiento negativo (siete veces Caja), 47,7% de resolución en primer contacto y 65,5% de operaciones confirmadas. Es parcialmente esperable en créditos, pero la brecha es grande.',['speech','manager']]],
+ [/accion|recomend|prioridad|primero|empez/,()=>[`Hay ${allActs().length} acciones. Por impacto, empezaría por: 1) reclasificar Otros Servicios N, 2) cortar el ciclo con Pagos, 3) reforzar Negocio martes y viernes. Las dos primeras atacan el 48% de los abandonos. Las ves en la pestaña Acciones.`,['manager']]],
+ [/resumen|resum|general|hola/,()=>['Septiembre: 3.889 turnos, 1.517 llamadas analizadas, 8,4% de abandono. Caja funciona bien; la fricción está en Negocio y en Otros Servicios N. Podés preguntarme por trámites, días, ejecutivos, copiloto o acciones.',['manager','speech']]]
+];
+function answer(q){
+  const n=norm(q);
+  for(const [re,fn] of KB){if(re.test(n))return fn()}
+  return ['Ese dato no está en las fuentes conectadas. Puedo responder sobre trámites, abandono, derivaciones, días y horarios, ejecutivos, copiloto, encuestas, operaciones confirmadas y acciones sugeridas.',[]];
+}
+function chatLog(){
+  const m=state.chat.map(x=>x.r==='u'?`<div class="msg u">${esc(x.t)}</div>`:`<div class="msg a">${esc(x.t)}${x.src&&x.src.length?`<div class="cross">${x.src.map(s=>`<span class="chip">${pName(s)}</span>`).join('')}</div>`:''}</div>`).join('');
+  return (state.chat.length||state.busy?m:`<div class="msg a">Soy el agente que escribió este informe. Preguntame por cualquier dato y te explico de dónde sale.</div>`)+(state.busy?`<div class="msg a"><span class="typing"><i></i><i></i><i></i></span></div>`:'');
+}
+function chatHtml(){
+  return `<aside class="card chat" aria-label="Chat con el agente de informes"><div class="hd"><div class="ico">N</div><div><h3>Agente de informes</h3><div class="muted" style="font-size:12px">Responde con los datos de ${sources().length} fuentes</div></div></div>
+  <div class="log" id="chatLog" aria-live="polite">${chatLog()}</div>
+  ${state.chat.length?'':`<div class="sugs">${SUGS.map(q=>`<button type="button" data-q="${esc(q)}">${esc(q)}</button>`).join('')}</div>`}
+  <form id="chatForm"><input id="chatIn" autocomplete="off" placeholder="Preguntá sobre un dato del informe" aria-label="Pregunta"><button class="btn" type="submit">Enviar</button></form></aside>`;
+}
+function ask(q){
+  q=q.trim();if(!q||state.busy)return;
+  const first=!state.chat.length;
+  state.chat.push({r:'u',t:q});state.busy=true;first?render():updLog();
+  setTimeout(()=>{const [t,src]=answer(q);state.chat.push({r:'a',t,src});state.busy=false;
+    if(state.view==='informe')updLog()},700);
+}
+function updLog(){const l=$('#chatLog');if(l){l.innerHTML=chatLog();l.scrollTop=l.scrollHeight}}
+
+/* ---------- Render y eventos ---------- */
+function render(){
+  document.querySelectorAll('.nav').forEach(b=>b.setAttribute('aria-current',b.dataset.v===state.view?'page':'false'));
+  $('#nAcc').textContent=state.generated?allActs().filter(a=>st(a.id).s!=='ok').length:0;
+  $('#nAcc').hidden=!state.generated;
+  $('#main').classList.toggle('wide',state.view==='informe'&&state.generated&&!state.gen);
+  $('#main').innerHTML={fuentes:vFuentes,informe:vInforme,acciones:vAcciones,agentes:vAgentes}[state.view]();
+}
+function go(v){state.view=v;render();window.scrollTo(0,0)}
+function startGen(){
+  state.gen={i:0};state.view='informe';render();
+  const t=setInterval(()=>{state.gen.i++;if(state.gen.i>=5){clearInterval(t);state.gen=null;state.generated=true;state.actions={}}
+    if(state.view==='informe')render()},700);
+}
+function runAct(id){
+  state.actions[id]={s:'run',p:0};render();
+  const t=setInterval(()=>{const a=state.actions[id];if(!a||a.s!=='run'){clearInterval(t);return}
+    a.p+=20;if(a.p>=100){a.s=state.autonomy[AG[allActs().find(x=>x.id===id).ag].id]==='auto'?'ok':'rev';clearInterval(t)}
+    if(state.view==='acciones')render()},400);
+}
+document.addEventListener('click',e=>{
+  const t=e.target.closest('button');if(!t)return;
+  if(t.dataset.v)go(t.dataset.v);
+  else if(t.dataset.go)go(t.dataset.go);
+  else if(t.dataset.sw){state.on[t.dataset.sw]=!state.on[t.dataset.sw];render()}
+  else if(t.id==='genBtn')startGen();
+  else if(t.dataset.q){ask(t.dataset.q);const i=$('#chatIn');if(i)i.focus()}
+  else if(t.dataset.run)runAct(t.dataset.run);
+  else if(t.dataset.ok){state.actions[t.dataset.ok].s='ok';render()}
+  else if(t.dataset.redo){delete state.actions[t.dataset.redo];render()}
+  else if(t.dataset.au){const[a,k]=t.dataset.au.split(':');state.autonomy[a]=k;render()}
+  else if(t.id==='themeBtn'){const r=document.documentElement,d=r.dataset.theme==='dark'||(!r.dataset.theme&&matchMedia('(prefers-color-scheme:dark)').matches);r.dataset.theme=d?'light':'dark'}
+});
+document.addEventListener('submit',e=>{if(e.target.id==='chatForm'){e.preventDefault();const i=$('#chatIn');const v=i.value;i.value='';ask(v);i.focus()}});
+render();
+</script>
+
+</body></html>
